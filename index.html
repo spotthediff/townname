@@ -39,12 +39,12 @@
         }
 
         th {
-            width: 150px;
+            width: 220px;
             
         }
 
         td {
-            width: 150px;
+            width: 220px;
         }
 
         div#container {
@@ -377,16 +377,17 @@
                         }
                         setquestion();
                     }
-                    else {
-                        rb.style.color = "red";
-                        tname.style.color = "red";
-                        incorrect = true;
+                    else if (!incorrect) {
                         var row = table.insertRow(-1);
                         var cell1 = row.insertCell(-1);
                         var cell2 = row.insertCell(-1);
                         cell1.innerHTML = town_name[index];
                         cell2.innerHTML = data[town_name[index]];
-                        
+                    }
+                    else {
+                        rb.style.color = "red";
+                        tname.style.color = "red";
+                        incorrect = true;
                     }
                 }
             }
