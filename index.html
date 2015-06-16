@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>町名検定</title>
+    </head>
+    <body>
+        <div id="container">
+            <ruby>
+                <rb id="tname"><!--<rb id="endname"></rb>-->
+                <rt id="read"></rt>
+            </ruby>
+            <span id="endname"></span>
+            <form id="nameform">
+                <input type="text" id="txtarea" size="18">
+            </form>
+            <div>正答数: <span id="correctibity">0</span><span> / </span><span id="number_of_question"></span></div>
+            <table>
+                <tbody>
+                    <th>町名</th>
+                    <th>読み仮名</th>
+                </tbody>
+            </table>
+        </div>
+        <footer>
+            <div>2015 健康増進課 木村</div>
+        </footer>
+    </body>
+    <style>
+        * {
+            font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+        }
+
+        table {
+            margin: 0 auto;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            
+        }
+
+        th {
+            width: 150px;
+            
+        }
+
+        td {
+            width: 150px;
+        }
+
+        div#container {
+            width: 70%;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        span#endname {
+            font-size: 120px;
+        }
+
+        ruby {
+            font-size: 110px;
+            display: inline;
+            margin-bottom: 20px;
+        }
+
+        rt {
+            font-size: 30px;
+            margin-bottom: 20px;
+            ruby-align: center;
+
+        }
+
+        rb {
+            font-size: 120px; /*120px;*/
+        }
+
+        rb#tname {
+            margin-right: 11px;
+        }
+
+        input[type="text"] {
+            display: block;
+            ime-mode: active;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 40px;
+        }
+
+        footer {
+            border-top: solid 1px;
+        }
+
+    </style>
+    <script>
+        if (!String.prototype.endsWith) {
+            Object.defineProperty(String.prototype, 'endsWith', {
+                enumerable: false,
+                configurable: false,
+                writable: false,
+                value: function (searchString, position) {
+                    position = position || this.length;
+                    position = position - searchString.length;
+                    return this.lastIndexOf(searchString) === position;
+                }
+            });
+        }
+
+        (function () {
+            var data = {
+                '戸谷町': 'とたに',
+                '瓜生野町': 'うりゅうの',
+                '西河内町': 'にしこうち',
+                '小野谷町': 'おのだに',
+                '島町': 'しま',
+                '大塩町': 'おおしお',
+                '森久町': 'もりひさ',
+                '住吉町': 'すみよし',
+                '定友町': 'さだとも',
+                '問屋町': 'とんやまち',
+                '長土呂町': 'ながとろ',
+                '武生柳町': 'たけふやなぎ',
+                '元町': 'もとまち',
+                '室谷町': 'むろたに',
+                '国中町': 'くになか',
+                '氷坂町': 'ひさか',
+                '味真野町': 'あじまの',
+                '池泉町': 'いけいずみ',
+                '四郎丸町': 'しろうまる',
+                '下別所町': 'しもべっしょ',
+                '山室町': 'やまむろ',
+                '松森町': 'まつもり',
+                '市野々町': 'いちのの',
+                '三ツ俣町': 'みつまた',
+                '余川町': 'よかわ',
+                '東樫尾町': 'ひがしかしお',
+                '南': 'みなみ',
+                '片屋町': 'かたや',
+                '畷町': 'なわて',
+                '千福町': 'せんぷく',
+                '萱谷町': 'かやだに',
+                '錦町': 'にしき',
+                '西尾町': 'にしお',
+                '勝蓮花町': 'しょうれんげ',
+                '真柄町': 'まから',
+                '下中津原町': 'しもなかつはら',
+                '押田': 'おしだ',
+                '横根町': 'よこね',
+                '広瀬ひばりヶ丘': 'ひろせひばりがおか',
+                '常久団地': 'つねひさだんち',
+                '桂町': 'かつら',
+                '若竹町': 'わかたけ',
+                '高岡町': 'たかおか',
+                '葛岡町': 'くずおか',
+                '朽飯町': 'くだし',
+                '向陽町': 'こうよう',
+                '杉尾町': 'すぎお',
+                '北府': 'きたご',
+                '野上町': 'のがみ',
+                '徳間町': 'とくま',
+                '北日野団地': 'きたひのだんち',
+                '千合谷町': 'せんごうだに',
+                '中印町': 'なかいん',
+                '文京': 'ぶんきょう',
+                '粟野町': 'あわの',
+                '小野町': 'この',
+                '八石町': 'はちこく',
+                '北千福町': 'きたせんぷく',
+                '中野町': 'なかの',
+                '若須町': 'わがす',
+                '牧町': 'まき',
+                '赤坂町': 'あかさか',
+                '新保': 'しんぼ',
+                '月見町': 'つきみ',
+                '三ツ屋町': 'みつや',
+                '柳元町': 'やなぎもとまち',
+                '奥宮谷町': 'おくみやだに',
+                '入谷町': 'いりたに',
+                '庄町': 'しょう',
+                '北町': 'きた',
+                '不老町': 'おいず',
+                '庄田町': 'しょうでん',
+                '南小山町': 'みなみおやま',
+                '下戸板': 'しもといた',
+                '岩本町': 'いわもと',
+                '米口仏谷町': 'こめぐちほとけだに',
+                '沓掛町': 'くつかけ',
+                '領家町': 'りょうけ',
+                '轟井町': 'とどろい',
+                '八幡': 'はちまん',
+                '余田町': 'はぐり',
+                '下平吹町': 'しもひらぶき',
+                '沢町': 'さわ',
+                '丹生郷町': 'にゅうのごう',
+                '下四目町': 'しもしめ',
+                '南坂下町': 'みなみさかした',
+                '長五町': 'ちょうご',
+                '池ノ上町': 'いけのかみ',
+                '高瀬': 'たかせ',
+                '春日野町': 'かすがの',
+                '文室町': 'ふむろ',
+                '深草': 'ふかくさ',
+                '勾当原町': 'こうとうがはら',
+                '家久町': 'いえひさ',
+                '大手町': 'おおで',
+                '相木町': 'あいのき',
+                '大屋町': 'おおや',
+                '若松町': 'わかまつ',
+                '別印町': 'べついん',
+                '下太田町': 'しもおおだ',
+                '天王町': 'てんのう',
+                '瓜生町': 'うりゅう',
+                '国高': 'くにたか',
+                '堀川町': 'ほりかわ',
+                '芝原': 'しばはら',
+                '岩内町': 'いわうち',
+                '小松': 'こまつ',
+                '北坂下町': 'きたさかした',
+                '蓬莱町': 'ほうらい',
+                '清根町': 'きよね',
+                '府中': 'ふちゅう',
+                '岡本町': 'おかもと',
+                '桧尾谷町': 'ひおだに',
+                '菖蒲谷町': 'しょうぶだに',
+                '水間町': 'みずま',
+                '新在家町': 'しんざいけ',
+                '清水頭町': 'しみずがしら',
+                'あおば町': 'あおば',
+                '大虫町': 'おおむし',
+                '安戸町': 'やすど',
+                '寺地町': 'てらじ',
+                '向新保町': 'むかいしんぼ',
+                '富士見が丘': 'ふじみがおか',
+                '平林町': 'ひらばやし',
+                '曽原町': 'そはら',
+                '今宿町': 'いまじゅく',
+                '神明町': 'しんめい',
+                '東庄境町': 'ひがししょうざかい',
+                '中平吹町': 'なかひらぶき',
+                '平和町': 'へいわ',
+                '村国': 'むらくに',
+                '万代町': 'ばんだい',
+                '稲寄町': 'いなよせ',
+                '御幸町': 'みゆき',
+                '萩原町': 'はぎわら',
+                '北小山町': 'きたおやま',
+                '中津山町': 'なかつやま',
+                '京町': 'きょうまち',
+                '常久町': 'つねひさ',
+                '国兼町': 'くにかね',
+                '上太田町': 'かみおおた',
+                '殿町': 'との',
+                '中山町': 'なかやま',
+                '横住町': 'よこずみ',
+                '鴉ヶ平町': 'からすがだいら',
+                '高木町': 'たかぎ',
+                '塚原町': 'つかばら',
+                '上小松町': 'かみこまつ',
+                '若宮町': 'わかみや',
+                '粟田部町': 'あわたべ',
+                '吾妻町': 'あづま',
+                '下黒川町': 'しもくろかわ',
+                '都辺町': 'とべ',
+                '横市町': 'よこいち',
+                '本町': 'ほんまち',
+                '白崎町': 'しろさき',
+                '姫川': 'ひめかわ',
+                '赤谷町': 'あかたに',
+                '行松町': 'ゆきまつ',
+                '上四目町': 'かみしめ',
+                '二階堂町': 'にかいどう',
+                '平出': 'ひらいで',
+                '新保町': 'しんぼ',
+                '大虫本町': 'おおむしほんちょう',
+                '新町': 'しん',
+                '矢放町': 'やはなし',
+                '広瀬町': 'ひろせ',
+                '塚町': 'つか',
+                '野岡町': 'のおか',
+                '本保町': 'ほんぼ',
+                '高森町': 'たかもり',
+                '中津原町': 'なかつはら',
+                '東千福町': 'ひがしせんぷく',
+                '湯谷町': 'ゆや',
+                '土山小谷町': 'つちやまこだに',
+                '大平町': 'おおひら',
+                '堀町': 'ほり',
+                '安養寺町': 'あんようじ',
+                '西庄境町': 'にししょうざかい',
+                '上真柄町': 'かみまから',
+                '上大坪町': 'かみおおつぼ',
+                '長谷町': 'ながたに',
+                '中央': 'ちゅうおう',
+                '西谷町': 'にしたに',
+                '五分市町': 'ごぶいち',
+                '丸岡町': 'まるか',
+                '矢船町': 'やふね',
+                '蓑脇町': 'みのわき',
+                '幸町': 'さいわい',
+                '上黒川町': 'かみくろかわ',
+                '春山町': 'はるやま',
+                '藤木町': 'ふじのき',
+                '荒谷町': 'あらたに',
+                '畑町': 'はた',
+                '西樫尾町': 'にしかしお',
+                '北山町': 'きたやま',
+                '馬上免町': 'ばじょうめ',
+                '長尾町': 'ながお',
+                '大虫本町勝蓮花': 'おおむしほんちょうしょうれんげ',
+                '小杉町': 'こすぎ',
+                '中居町': 'なかい',
+                '妙法寺町': 'みょうほうじ',
+                '本多': 'ほんだ',
+                '豊町': 'ゆたか',
+                '吉村町': 'よしむら',
+                '新小野町': 'しんこの',
+                '波垣町': 'なみがき',
+                '帆山町': 'ほやま',
+                '日野美': 'ひのみ',
+                '大滝町': 'おおたき',
+                '新堂町': 'しんどう',
+                '中新庄町': 'なかしんじょう',
+                '向ヶ丘町': 'むこうがおか',
+                '杉崎町': 'すぎさき',
+                '三ツ口町': 'みつくち',
+                '大谷町': 'おおたに',
+                '宮谷町': 'みやだに',
+                '国府': 'こくふ'
+            }
+
+            var correct = 0;
+            var incorrect = false;
+
+            function randint(x, y) {
+                return Math.floor(Math.random() * (y - x + 1)) + x;
+            }
+
+            var name_form = document.getElementById("nameform")
+            var town_name = Object.keys(data);
+            var number_of_question = town_name.length;
+            var number_of_question_element = document.getElementById("number_of_question");
+            number_of_question_element.innerHTML = number_of_question;
+
+            var tname = document.getElementById("tname");
+            var rb = document.getElementById("read");
+            var txtarea = document.getElementById("txtarea");
+            var endname = document.getElementById("endname");
+            var correctibity = document.getElementById("correctibity");
+            txtarea.focus();
+
+
+            function onsubmitwithindex(index) {
+                return function (e) {
+                    e.preventDefault();
+                    if (data[town_name[index]] === txtarea.value) {
+                        rb.style.color = "black";
+                        tname.style.color = "#8dd17f";
+                        delete data[town_name[index]];
+                        town_name.splice(index, 1);
+                        if (!incorrect) {
+                            correct++;
+                            correctibity.innerHTML = correct;
+
+                        }
+                        else {
+                            incorrect = false;
+                        }
+                        rb.innerHTML = "";
+                        txtarea.value = "";
+
+                        if (town_name.length === 0) {
+                            tname.innerHTML = "Finish!";
+                            txtarea.style.display = "none";
+                            return;
+                        }
+                        setquestion();
+                    }
+                    else {
+                        rb.style.color = "red";
+                        tname.style.color = "red";
+                        incorrect = true;
+                    }
+                }
+            }
+
+            txtarea.oninput = function () {
+                rb.innerHTML = txtarea.value;
+            };
+
+
+
+            function setquestion () {
+                var index = randint(0, town_name.length - 1);
+                var question = town_name[index];
+                var answer = data[question];
+                if (question.endsWith("町") && (!answer.endsWith("ちょう") && !answer.endsWith("まち"))) {
+                    tname.innerHTML = question.slice(0, -1);
+                    endname.innerHTML = "町";
+
+                }
+
+                else {
+                    tname.innerHTML = question;
+                    endname.innerHTML = "";
+                }
+
+                tname.style.color = "#8dd17f";
+                nameform.onsubmit = onsubmitwithindex(index);
+            }
+
+            setquestion();
+        })()
+
+
+    </script>
+</html>
