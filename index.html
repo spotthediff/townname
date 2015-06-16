@@ -15,11 +15,11 @@
                 <input type="text" id="txtarea" size="18">
             </form>
             <div>正答数: <span id="correctibity">0</span><span> / </span><span id="number_of_question"></span></div>
-            <table>
-                <tbody>
+            <table id="table">
+                <thead>
                     <th>町名</th>
                     <th>読み仮名</th>
-                </tbody>
+                </thead>
             </table>
         </div>
         <footer>
@@ -347,6 +347,7 @@
             var txtarea = document.getElementById("txtarea");
             var endname = document.getElementById("endname");
             var correctibity = document.getElementById("correctibity");
+            var table = document.getElementById("table");
             txtarea.focus();
 
 
@@ -380,6 +381,12 @@
                         rb.style.color = "red";
                         tname.style.color = "red";
                         incorrect = true;
+                        var row = table.insertRow(-1);
+                        var cell1 = row.insertCell(-1);
+                        var cell2 = row.insertCell(-1);
+                        cell1.innerHTML = town_name[index];
+                        cell2.innerHTML = data[town_name[index]];
+                        
                     }
                 }
             }
