@@ -35,6 +35,7 @@
             margin: 0 auto;
             margin-top: 40px;
             margin-bottom: 30px;
+            border-spacing: 0px;
             
         }
 
@@ -384,7 +385,7 @@
                         tname.style.color = "red";
                         if (!incorrect) {
                             var row = table.insertRow(-1);
-                            if (tablecolor % 2 > 0) {
+                            if (tablecolor % 2 !== 0) {
                                 row.style.backgroundColor = "#ebeced";
                                 tablecolor++;
                             }    
