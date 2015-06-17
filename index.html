@@ -49,7 +49,7 @@
         }
 
         div#container {
-            width: 70%;
+            width: 85%;
             margin: 0 auto;
             text-align: center;
             margin-top: 30px;
@@ -386,11 +386,10 @@
                         tname.style.color = "red";
                         if (!incorrect) {
                             var row = table.insertRow(-1);
-                            console.log("Debug", tablecolor % 2);
                             if (tablecolor % 2 !== 0) {
                                 row.style.backgroundColor = "#ebeced";
-                                tablecolor++;
-                            }    
+                            }
+                            tablecolor++;
                             var cell1 = row.insertCell(-1);
                             var cell2 = row.insertCell(-1);
                             cell1.innerHTML = town_name[index];
