@@ -36,7 +36,7 @@
             margin-top: 40px;
             margin-bottom: 30px;
             border-spacing: 0px;
-            
+            display: none;
         }
 
         th {
@@ -381,6 +381,7 @@
                     }
                     
                     else {
+                        table.style.display = "";
                         rb.style.color = "red";
                         tname.style.color = "red";
                         if (!incorrect) {
