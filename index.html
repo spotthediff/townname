@@ -15,6 +15,7 @@
                 <input type="text" id="txtarea" size="18">
             </form>
             <div>正答数: <span id="correctibity">0</span><span> / </span><span id="number_of_question"></span></div>
+            <p id="notice">おしらせ: 間違えた町名が表の末尾ではなく、頭に追加されるようになりました</p> // notice
             <table id="table">
                 <thead>
                     <th>町名</th>
@@ -55,7 +56,11 @@
             text-align: center;
             margin-top: 30px;
         }
-
+        
+        p#notice {
+            margin: 0 auto;
+            font-size: 20px;
+        }
         span#endname {
             font-size: 120px;
         }
@@ -351,12 +356,14 @@
             var endname = document.getElementById("endname");
             var correctibity = document.getElementById("correctibity");
             var table = document.getElementById("table");
+            var notice = document.getElementById("notice");
             txtarea.focus();
 
 
             function onsubmitwithindex(index) {
                 return function (e) {
                     e.preventDefault();
+                    notice.style.display = "none";
                     if (data[town_name[index]] === txtarea.value) {
                         rb.style.color = "black";
                         tname.style.color = "#8dd17f";
@@ -386,7 +393,7 @@
                         rb.style.color = "red";
                         tname.style.color = "red";
                         if (!incorrect) {
-                            var row = table.insertRow(-1);
+                            var row = table.insertRow(0);
                             if (tablecolor % 2 !== 0) {
                                 row.style.backgroundColor = "#f4f4f4";
                             }
