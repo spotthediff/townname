@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>ChoKen Code</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <pre>
+        <code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;title&gt;町名検定&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;container&quot;&gt;
+            &lt;ruby&gt;
+                &lt;rb id=&quot;tname&quot;&gt;&lt;!--&lt;rb id=&quot;endname&quot;&gt;&lt;/rb&gt;--&gt;
+                &lt;rt id=&quot;read&quot;&gt;&lt;/rt&gt;
+            &lt;/ruby&gt;
+            &lt;span id=&quot;endname&quot;&gt;&lt;/span&gt;
+            &lt;form id=&quot;nameform&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;txtarea&quot; size=&quot;18&quot;&gt;
+            &lt;/form&gt;
+            &lt;div&gt;正答数: &lt;span id=&quot;correctibity&quot;&gt;0&lt;/span&gt;&lt;span&gt; / &lt;/span&gt;&lt;span id=&quot;number_of_question&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+            &lt;table id=&quot;table&quot;&gt;
+                &lt;thead&gt;
+                    &lt;th&gt;町名&lt;/th&gt;
+                    &lt;th&gt;読み仮名&lt;/th&gt;
+                &lt;/thead&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;footer&gt;
+            &lt;div&gt;2015 MIT License&lt;/div&gt;
+        &lt;/footer&gt;
+    &lt;/body&gt;
+    &lt;style&gt;
+        * {
+            font-family: &quot;Hiragino Kaku Gothic ProN&quot;, Meiryo, sans-serif;
+        }
+
+        table {
+            margin: 0 auto;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            border-spacing: 0px;
+            font-size: 1.32em;
+            display: none;
+        }
+
+        th {
+            width: 370px;
+            
+        }
+
+        td {
+            width: 370px;
+        }
+
+        div#container {
+            width: 87%;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        span#endname {
+            font-size: 120px;
+        }
+
+        ruby {
+            font-size: 110px;
+            display: inline;
+            margin-bottom: 20px;
+        }
+
+        rt {
+            font-size: 30px;
+            margin-bottom: 20px;
+            ruby-align: center;
+
+        }
+
+        rb {
+            font-size: 120px; /*120px;*/
+        }
+
+        rb#tname {
+            margin-right: 11px;
+        }
+
+        input[type=&quot;text&quot;] {
+            display: block;
+            ime-mode: active;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 40px;
+        }
+
+        footer {
+            border-top: solid 1px;
+            margin-top: 40px;
+        }
+
+    &lt;/style&gt;
+    &lt;script&gt;
+        if (!String.prototype.endsWith) {
+            Object.defineProperty(String.prototype, &#x27;endsWith&#x27;, {
+                enumerable: false,
+                configurable: false,
+                writable: false,
+                value: function (searchString, position) {
+                    position = position || this.length;
+                    position = position - searchString.length;
+                    return this.lastIndexOf(searchString) === position;
+                }
+            });
+        }
+
+        (function () {
+            var data = {
+                &#x27;戸谷町&#x27;: &#x27;とたに&#x27;,
+                &#x27;瓜生野町&#x27;: &#x27;うりゅうの&#x27;,
+                &#x27;西河内町&#x27;: &#x27;にしこうち&#x27;,
+                &#x27;小野谷町&#x27;: &#x27;おのだに&#x27;,
+                &#x27;島町&#x27;: &#x27;しま&#x27;,
+                &#x27;大塩町&#x27;: &#x27;おおしお&#x27;,
+                &#x27;森久町&#x27;: &#x27;もりひさ&#x27;,
+                &#x27;住吉町&#x27;: &#x27;すみよし&#x27;,
+                &#x27;定友町&#x27;: &#x27;さだとも&#x27;,
+                &#x27;問屋町&#x27;: &#x27;とんやまち&#x27;,
+                &#x27;長土呂町&#x27;: &#x27;ながとろ&#x27;,
+                &#x27;武生柳町&#x27;: &#x27;たけふやなぎ&#x27;,
+                &#x27;元町&#x27;: &#x27;もとまち&#x27;,
+                &#x27;室谷町&#x27;: &#x27;むろたに&#x27;,
+                &#x27;国中町&#x27;: &#x27;くになか&#x27;,
+                &#x27;氷坂町&#x27;: &#x27;ひさか&#x27;,
+                &#x27;味真野町&#x27;: &#x27;あじまの&#x27;,
+                &#x27;池泉町&#x27;: &#x27;いけいずみ&#x27;,
+                &#x27;四郎丸町&#x27;: &#x27;しろうまる&#x27;,
+                &#x27;下別所町&#x27;: &#x27;しもべっしょ&#x27;,
+                &#x27;山室町&#x27;: &#x27;やまむろ&#x27;,
+                &#x27;松森町&#x27;: &#x27;まつもり&#x27;,
+                &#x27;市野々町&#x27;: &#x27;いちのの&#x27;,
+                &#x27;三ツ俣町&#x27;: &#x27;みつまた&#x27;,
+                &#x27;余川町&#x27;: &#x27;よかわ&#x27;,
+                &#x27;東樫尾町&#x27;: &#x27;ひがしかしお&#x27;,
+                &#x27;南&#x27;: &#x27;みなみ&#x27;,
+                &#x27;片屋町&#x27;: &#x27;かたや&#x27;,
+                &#x27;畷町&#x27;: &#x27;なわて&#x27;,
+                &#x27;千福町&#x27;: &#x27;せんぷく&#x27;,
+                &#x27;萱谷町&#x27;: &#x27;かやだに&#x27;,
+                &#x27;錦町&#x27;: &#x27;にしき&#x27;,
+                &#x27;西尾町&#x27;: &#x27;にしお&#x27;,
+                &#x27;勝蓮花町&#x27;: &#x27;しょうれんげ&#x27;,
+                &#x27;真柄町&#x27;: &#x27;まから&#x27;,
+                &#x27;下中津原町&#x27;: &#x27;しもなかつはら&#x27;,
+                &#x27;押田&#x27;: &#x27;おしだ&#x27;,
+                &#x27;横根町&#x27;: &#x27;よこね&#x27;,
+                &#x27;広瀬ひばりヶ丘&#x27;: &#x27;ひろせひばりがおか&#x27;,
+                &#x27;常久団地&#x27;: &#x27;つねひさだんち&#x27;,
+                &#x27;桂町&#x27;: &#x27;かつら&#x27;,
+                &#x27;若竹町&#x27;: &#x27;わかたけ&#x27;,
+                &#x27;高岡町&#x27;: &#x27;たかおか&#x27;,
+                &#x27;葛岡町&#x27;: &#x27;くずおか&#x27;,
+                &#x27;朽飯町&#x27;: &#x27;くだし&#x27;,
+                &#x27;向陽町&#x27;: &#x27;こうよう&#x27;,
+                &#x27;杉尾町&#x27;: &#x27;すぎお&#x27;,
+                &#x27;北府&#x27;: &#x27;きたご&#x27;,
+                &#x27;野上町&#x27;: &#x27;のがみ&#x27;,
+                &#x27;徳間町&#x27;: &#x27;とくま&#x27;,
+                &#x27;北日野団地&#x27;: &#x27;きたひのだんち&#x27;,
+                &#x27;千合谷町&#x27;: &#x27;せんごうだに&#x27;,
+                &#x27;中印町&#x27;: &#x27;なかいん&#x27;,
+                &#x27;文京&#x27;: &#x27;ぶんきょう&#x27;,
+                &#x27;粟野町&#x27;: &#x27;あわの&#x27;,
+                &#x27;小野町&#x27;: &#x27;この&#x27;,
+                &#x27;八石町&#x27;: &#x27;はちこく&#x27;,
+                &#x27;北千福町&#x27;: &#x27;きたせんぷく&#x27;,
+                &#x27;中野町&#x27;: &#x27;なかの&#x27;,
+                &#x27;若須町&#x27;: &#x27;わがす&#x27;,
+                &#x27;牧町&#x27;: &#x27;まき&#x27;,
+                &#x27;赤坂町&#x27;: &#x27;あかさか&#x27;,
+                &#x27;新保&#x27;: &#x27;しんぼ&#x27;,
+                &#x27;月見町&#x27;: &#x27;つきみ&#x27;,
+                &#x27;三ツ屋町&#x27;: &#x27;みつや&#x27;,
+                &#x27;柳元町&#x27;: &#x27;やなぎもとまち&#x27;,
+                &#x27;奥宮谷町&#x27;: &#x27;おくみやだに&#x27;,
+                &#x27;入谷町&#x27;: &#x27;いりたに&#x27;,
+                &#x27;庄町&#x27;: &#x27;しょう&#x27;,
+                &#x27;北町&#x27;: &#x27;きた&#x27;,
+                &#x27;不老町&#x27;: &#x27;おいず&#x27;,
+                &#x27;庄田町&#x27;: &#x27;しょうでん&#x27;,
+                &#x27;南小山町&#x27;: &#x27;みなみおやま&#x27;,
+                &#x27;下戸板&#x27;: &#x27;しもといた&#x27;,
+                &#x27;岩本町&#x27;: &#x27;いわもと&#x27;,
+                &#x27;米口仏谷町&#x27;: &#x27;こめぐちほとけだに&#x27;,
+                &#x27;沓掛町&#x27;: &#x27;くつかけ&#x27;,
+                &#x27;領家町&#x27;: &#x27;りょうけ&#x27;,
+                &#x27;轟井町&#x27;: &#x27;とどろい&#x27;,
+                &#x27;八幡&#x27;: &#x27;はちまん&#x27;,
+                &#x27;余田町&#x27;: &#x27;はぐり&#x27;,
+                &#x27;下平吹町&#x27;: &#x27;しもひらぶき&#x27;,
+                &#x27;沢町&#x27;: &#x27;さわ&#x27;,
+                &#x27;丹生郷町&#x27;: &#x27;にゅうのごう&#x27;,
+                &#x27;下四目町&#x27;: &#x27;しもしめ&#x27;,
+                &#x27;南坂下町&#x27;: &#x27;みなみさかした&#x27;,
+                &#x27;長五町&#x27;: &#x27;ちょうご&#x27;,
+                &#x27;池ノ上町&#x27;: &#x27;いけのかみ&#x27;,
+                &#x27;高瀬&#x27;: &#x27;たかせ&#x27;,
+                &#x27;春日野町&#x27;: &#x27;かすがの&#x27;,
+                &#x27;文室町&#x27;: &#x27;ふむろ&#x27;,
+                &#x27;深草&#x27;: &#x27;ふかくさ&#x27;,
+                &#x27;勾当原町&#x27;: &#x27;こうとうがはら&#x27;,
+                &#x27;家久町&#x27;: &#x27;いえひさ&#x27;,
+                &#x27;大手町&#x27;: &#x27;おおで&#x27;,
+                &#x27;相木町&#x27;: &#x27;あいのき&#x27;,
+                &#x27;大屋町&#x27;: &#x27;おおや&#x27;,
+                &#x27;若松町&#x27;: &#x27;わかまつ&#x27;,
+                &#x27;別印町&#x27;: &#x27;べついん&#x27;,
+                &#x27;下太田町&#x27;: &#x27;しもおおだ&#x27;,
+                &#x27;天王町&#x27;: &#x27;てんのう&#x27;,
+                &#x27;瓜生町&#x27;: &#x27;うりゅう&#x27;,
+                &#x27;国高&#x27;: &#x27;くにたか&#x27;,
+                &#x27;堀川町&#x27;: &#x27;ほりかわ&#x27;,
+                &#x27;芝原&#x27;: &#x27;しばはら&#x27;,
+                &#x27;岩内町&#x27;: &#x27;いわうち&#x27;,
+                &#x27;小松&#x27;: &#x27;こまつ&#x27;,
+                &#x27;北坂下町&#x27;: &#x27;きたさかした&#x27;,
+                &#x27;蓬莱町&#x27;: &#x27;ほうらい&#x27;,
+                &#x27;清根町&#x27;: &#x27;きよね&#x27;,
+                &#x27;府中&#x27;: &#x27;ふちゅう&#x27;,
+                &#x27;岡本町&#x27;: &#x27;おかもと&#x27;,
+                &#x27;桧尾谷町&#x27;: &#x27;ひおだに&#x27;,
+                &#x27;菖蒲谷町&#x27;: &#x27;しょうぶだに&#x27;,
+                &#x27;水間町&#x27;: &#x27;みずま&#x27;,
+                &#x27;新在家町&#x27;: &#x27;しんざいけ&#x27;,
+                &#x27;清水頭町&#x27;: &#x27;しみずがしら&#x27;,
+                &#x27;あおば町&#x27;: &#x27;あおば&#x27;,
+                &#x27;大虫町&#x27;: &#x27;おおむし&#x27;,
+                &#x27;安戸町&#x27;: &#x27;やすど&#x27;,
+                &#x27;寺地町&#x27;: &#x27;てらじ&#x27;,
+                &#x27;向新保町&#x27;: &#x27;むかいしんぼ&#x27;,
+                &#x27;富士見が丘&#x27;: &#x27;ふじみがおか&#x27;,
+                &#x27;平林町&#x27;: &#x27;ひらばやし&#x27;,
+                &#x27;曽原町&#x27;: &#x27;そはら&#x27;,
+                &#x27;今宿町&#x27;: &#x27;いまじゅく&#x27;,
+                &#x27;神明町&#x27;: &#x27;しんめい&#x27;,
+                &#x27;東庄境町&#x27;: &#x27;ひがししょうざかい&#x27;,
+                &#x27;中平吹町&#x27;: &#x27;なかひらぶき&#x27;,
+                &#x27;平和町&#x27;: &#x27;へいわ&#x27;,
+                &#x27;村国&#x27;: &#x27;むらくに&#x27;,
+                &#x27;万代町&#x27;: &#x27;ばんだい&#x27;,
+                &#x27;稲寄町&#x27;: &#x27;いなよせ&#x27;,
+                &#x27;御幸町&#x27;: &#x27;みゆき&#x27;,
+                &#x27;萩原町&#x27;: &#x27;はぎわら&#x27;,
+                &#x27;北小山町&#x27;: &#x27;きたおやま&#x27;,
+                &#x27;中津山町&#x27;: &#x27;なかつやま&#x27;,
+                &#x27;京町&#x27;: &#x27;きょうまち&#x27;,
+                &#x27;常久町&#x27;: &#x27;つねひさ&#x27;,
+                &#x27;国兼町&#x27;: &#x27;くにかね&#x27;,
+                &#x27;上太田町&#x27;: &#x27;かみおおた&#x27;,
+                &#x27;殿町&#x27;: &#x27;との&#x27;,
+                &#x27;中山町&#x27;: &#x27;なかやま&#x27;,
+                &#x27;横住町&#x27;: &#x27;よこずみ&#x27;,
+                &#x27;鴉ヶ平町&#x27;: &#x27;からすがだいら&#x27;,
+                &#x27;高木町&#x27;: &#x27;たかぎ&#x27;,
+                &#x27;塚原町&#x27;: &#x27;つかばら&#x27;,
+                &#x27;上小松町&#x27;: &#x27;かみこまつ&#x27;,
+                &#x27;若宮町&#x27;: &#x27;わかみや&#x27;,
+                &#x27;粟田部町&#x27;: &#x27;あわたべ&#x27;,
+                &#x27;吾妻町&#x27;: &#x27;あづま&#x27;,
+                &#x27;下黒川町&#x27;: &#x27;しもくろかわ&#x27;,
+                &#x27;都辺町&#x27;: &#x27;とべ&#x27;,
+                &#x27;横市町&#x27;: &#x27;よこいち&#x27;,
+                &#x27;本町&#x27;: &#x27;ほんまち&#x27;,
+                &#x27;白崎町&#x27;: &#x27;しろさき&#x27;,
+                &#x27;姫川&#x27;: &#x27;ひめかわ&#x27;,
+                &#x27;赤谷町&#x27;: &#x27;あかたに&#x27;,
+                &#x27;行松町&#x27;: &#x27;ゆきまつ&#x27;,
+                &#x27;上四目町&#x27;: &#x27;かみしめ&#x27;,
+                &#x27;二階堂町&#x27;: &#x27;にかいどう&#x27;,
+                &#x27;平出&#x27;: &#x27;ひらいで&#x27;,
+                &#x27;新保町&#x27;: &#x27;しんぼ&#x27;,
+                &#x27;大虫本町&#x27;: &#x27;おおむしほんちょう&#x27;,
+                &#x27;新町&#x27;: &#x27;しん&#x27;,
+                &#x27;矢放町&#x27;: &#x27;やはなし&#x27;,
+                &#x27;広瀬町&#x27;: &#x27;ひろせ&#x27;,
+                &#x27;塚町&#x27;: &#x27;つか&#x27;,
+                &#x27;野岡町&#x27;: &#x27;のおか&#x27;,
+                &#x27;本保町&#x27;: &#x27;ほんぼ&#x27;,
+                &#x27;高森町&#x27;: &#x27;たかもり&#x27;,
+                &#x27;中津原町&#x27;: &#x27;なかつはら&#x27;,
+                &#x27;東千福町&#x27;: &#x27;ひがしせんぷく&#x27;,
+                &#x27;湯谷町&#x27;: &#x27;ゆや&#x27;,
+                &#x27;土山小谷町&#x27;: &#x27;つちやまこだに&#x27;,
+                &#x27;大平町&#x27;: &#x27;おおひら&#x27;,
+                &#x27;堀町&#x27;: &#x27;ほり&#x27;,
+                &#x27;安養寺町&#x27;: &#x27;あんようじ&#x27;,
+                &#x27;西庄境町&#x27;: &#x27;にししょうざかい&#x27;,
+                &#x27;上真柄町&#x27;: &#x27;かみまから&#x27;,
+                &#x27;上大坪町&#x27;: &#x27;かみおおつぼ&#x27;,
+                &#x27;長谷町&#x27;: &#x27;ながたに&#x27;,
+                &#x27;中央&#x27;: &#x27;ちゅうおう&#x27;,
+                &#x27;西谷町&#x27;: &#x27;にしたに&#x27;,
+                &#x27;五分市町&#x27;: &#x27;ごぶいち&#x27;,
+                &#x27;丸岡町&#x27;: &#x27;まるか&#x27;,
+                &#x27;矢船町&#x27;: &#x27;やふね&#x27;,
+                &#x27;蓑脇町&#x27;: &#x27;みのわき&#x27;,
+                &#x27;幸町&#x27;: &#x27;さいわい&#x27;,
+                &#x27;上黒川町&#x27;: &#x27;かみくろかわ&#x27;,
+                &#x27;春山町&#x27;: &#x27;はるやま&#x27;,
+                &#x27;藤木町&#x27;: &#x27;ふじのき&#x27;,
+                &#x27;荒谷町&#x27;: &#x27;あらたに&#x27;,
+                &#x27;畑町&#x27;: &#x27;はた&#x27;,
+                &#x27;西樫尾町&#x27;: &#x27;にしかしお&#x27;,
+                &#x27;北山町&#x27;: &#x27;きたやま&#x27;,
+                &#x27;馬上免町&#x27;: &#x27;ばじょうめ&#x27;,
+                &#x27;長尾町&#x27;: &#x27;ながお&#x27;,
+                &#x27;大虫本町勝蓮花&#x27;: &#x27;おおむしほんちょうしょうれんげ&#x27;,
+                &#x27;小杉町&#x27;: &#x27;こすぎ&#x27;,
+                &#x27;中居町&#x27;: &#x27;なかい&#x27;,
+                &#x27;妙法寺町&#x27;: &#x27;みょうほうじ&#x27;,
+                &#x27;本多&#x27;: &#x27;ほんだ&#x27;,
+                &#x27;豊町&#x27;: &#x27;ゆたか&#x27;,
+                &#x27;吉村町&#x27;: &#x27;よしむら&#x27;,
+                &#x27;新小野町&#x27;: &#x27;しんこの&#x27;,
+                &#x27;波垣町&#x27;: &#x27;なみがき&#x27;,
+                &#x27;帆山町&#x27;: &#x27;ほやま&#x27;,
+                &#x27;日野美&#x27;: &#x27;ひのみ&#x27;,
+                &#x27;大滝町&#x27;: &#x27;おおたき&#x27;,
+                &#x27;新堂町&#x27;: &#x27;しんどう&#x27;,
+                &#x27;中新庄町&#x27;: &#x27;なかしんじょう&#x27;,
+                &#x27;向ヶ丘町&#x27;: &#x27;むこうがおか&#x27;,
+                &#x27;杉崎町&#x27;: &#x27;すぎさき&#x27;,
+                &#x27;三ツ口町&#x27;: &#x27;みつくち&#x27;,
+                &#x27;大谷町&#x27;: &#x27;おおたに&#x27;,
+                &#x27;宮谷町&#x27;: &#x27;みやだに&#x27;,
+                &#x27;国府&#x27;: &#x27;こくふ&#x27;
+            }
+            
+            var tablecolor = 0;
+            var correct = 0;
+            var incorrect = false;
+
+            function randint(x, y) {
+                return Math.floor(Math.random() * (y - x + 1)) + x;
+            }
+
+            var name_form = document.getElementById(&quot;nameform&quot;)
+            var town_name = Object.keys(data);
+            var number_of_question = town_name.length;
+            var number_of_question_element = document.getElementById(&quot;number_of_question&quot;);
+            number_of_question_element.innerHTML = number_of_question;
+
+            var tname = document.getElementById(&quot;tname&quot;);
+            var rb = document.getElementById(&quot;read&quot;);
+            var txtarea = document.getElementById(&quot;txtarea&quot;);
+            var endname = document.getElementById(&quot;endname&quot;);
+            var correctibity = document.getElementById(&quot;correctibity&quot;);
+            var table = document.getElementById(&quot;table&quot;);
+            txtarea.focus();
+
+
+            function onsubmitwithindex(index) {
+                return function (e) {
+                    e.preventDefault();
+                    if (data[town_name[index]] === txtarea.value) {
+                        rb.style.color = &quot;black&quot;;
+                        tname.style.color = &quot;#8dd17f&quot;;
+                        delete data[town_name[index]];
+                        town_name.splice(index, 1);
+                        if (!incorrect) {
+                            correct++;
+                            correctibity.innerHTML = correct;
+
+                        }
+                        else {
+                            incorrect = false;
+                        }
+                        rb.innerHTML = &quot;&quot;;
+                        txtarea.value = &quot;&quot;;
+
+                        if (town_name.length === 0) {
+                            tname.innerHTML = &quot;Finish!&quot;;
+                            txtarea.style.display = &quot;none&quot;;
+                            return;
+                        }
+                        setquestion();
+                    }
+                    
+                    else {
+                        table.style.display = &quot;table&quot;;
+                        rb.style.color = &quot;red&quot;;
+                        tname.style.color = &quot;red&quot;;
+                        if (!incorrect) {
+                            var row = table.insertRow(1);
+                            if (tablecolor % 2 !== 0) {
+                                row.style.backgroundColor = &quot;#f4f4f4&quot;;
+                            }
+                            tablecolor++;
+                            var cell1 = row.insertCell(-1);
+                            var cell2 = row.insertCell(-1);
+                            cell1.innerHTML = town_name[index];
+                            cell2.innerHTML = data[town_name[index]];
+                        }
+                        incorrect = true;
+                    }
+                }
+            }
+
+            txtarea.oninput = function () {
+                rb.innerHTML = txtarea.value;
+            };
+
+
+
+            function setquestion () {
+                var index = randint(0, town_name.length - 1);
+                var question = town_name[index];
+                var answer = data[question];
+                if (question.endsWith(&quot;町&quot;) &amp;&amp; (!answer.endsWith(&quot;ちょう&quot;) &amp;&amp; !answer.endsWith(&quot;まち&quot;))) {
+                    tname.innerHTML = question.slice(0, -1);
+                    endname.innerHTML = &quot;町&quot;;
+
+                }
+
+                else {
+                    tname.innerHTML = question;
+                    endname.innerHTML = &quot;&quot;;
+                }
+
+                tname.style.color = &quot;#8dd17f&quot;;
+                nameform.onsubmit = onsubmitwithindex(index);
+            }
+
+            setquestion();
+        })()
+
+
+    &lt;/script&gt;
+&lt;/html&gt;
+</code>
+</pre>
+</body>
+</html>
