@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0">
+        <title>Choken Stage2</title>
+    </head>
+    <body>
+        <div id="container">
+            <div id="clickcontainer">
+                <p id="townname"></p>
+                <div id="upperbuttons" class="buttons">
+                    <div id="Id1" class="click"></div>
+                    <div id="Id2" class="click"></div>
+                </div>
+                <div id="underbuttons" class="buttons">
+                    <div id="Id3" class="click"></div>
+                    <div id="Id4" class="click"></div>
+                </div>
+            </div>
+        </div>
+        <table id="answer_table">
+            <thead id="answer_table_head">
+                <tr>
+                    <th>町名</th>
+                    <th>地区</th>
+                </tr>
+            </thead>
+        </table>
+        <style>
+            * {
+                font-family: "Hiragino Kaku Gothic", "Meiryo UI", sans-serif;
+            }
+
+            div#container {
+                width: 100%;
+
+            }
+
+            .buttons {
+                display: table;
+                margin: 0 auto;
+                border-collapse: separate;
+                border-spacing: 30px 20px;
+            }
+
+            table#answer_table {
+                margin: 0 auto;
+                margin-top: 5px;
+                font-size: 20px;
+
+            }
+
+            td, th {
+                width: 120px;
+
+            }
+
+            td {
+                text-align: center;
+            }
+
+            div.click {
+                text-align: center;
+                vertical-align: middle;
+                font-size: 2.4em;
+                border-radius: 5px;
+                background-color: black;
+                color: white;
+                margin: 0 auto;
+                display: table-cell;
+                width: 500px;
+                height: 220px;
+            }
+
+            div.click:hover {
+                cursor: pointer;
+            }
+
+            p#townname {
+                font-size: 94px;
+                display: block;
+                color: #8dd17f;
+                margin: 0 auto;
+            }
+
+            div#clickcontainer {
+                width: 1000px;
+                margin: 0 auto;
+            }
+
+            p#townname {
+                text-align: center;
+            }
+
+            @media (max-width: 768px) {
+                div.click {
+                    width: 140px;
+                    height: 140px;
+                    font-size: 1.6em;
+                }
+
+                div.buttons {
+                    border-spacing: 23px 13px;
+                }
+
+                div#clickcontainer {
+                    width: 100%;/*500px*/
+                    height: 500px;
+                    border-radius: 3px;
+                }
+
+                table#answer_table {
+                    border-collapse: collapse;
+                }
+
+            }
+        </style>
+        <script>
+
+            (function() {
+                var data = {
+                    "家久町": 4,
+                    "下戸板": 15,
+                    "小松一丁目": 1,
+                    "片屋町": 4,
+                    "新保二丁目": 6,
+                    "新在家町": 14,
+                    "八幡二丁目": 5,
+                    "元町": 1,
+                    "土山小谷町": 12,
+                    "湯谷町": 7,
+                    "府中三丁目": 0,
+                    "天王町": 0,
+                    "沓掛町": 12,
+                    "国府一丁目": 0,
+                    "芝原四丁目": 4,
+                    "向が丘町": 3,
+                    "萩原町": 12,
+                    "塚原町": 8,
+                    "水間町": 16,
+                    "新堂町": 15,
+                    "轟井町": 14,
+                    "朽飯町": 16,
+                    "桂町": 0,
+                    "牧町": 12,
+                    "余川町": 11,
+                    "若須町": 12,
+                    "岩内町": 9,
+                    "粟田部町宝栄": 13,
+                    "広瀬町": 3,
+                    "野上町": 1,
+                    "武生柳町": 2,
+                    "山室町": 15,
+                    "南坂下町": 14,
+                    "幸町": 0,
+                    "大谷町": 16,
+                    "本多一丁目": 1,
+                    "中居町": 11,
+                    "長土呂町": 5,
+                    "大屋町": 9,
+                    "畑町": 9,
+                    "万代町": 0,
+                    "庄田町": 9,
+                    "南一丁目": 2,
+                    "高森町": 6,
+                    "横住町": 16,
+                    "荒谷町": 9,
+                    "都辺町": 12,
+                    "松森町": 2,
+                    "大滝町": 14,
+                    "沢町": 1,
+                    "行松町": 2,
+                    "本町": 1,
+                    "三ツ口町": 2,
+                    "高岡町": 16,
+                    "西河内町": 16,
+                    "中平吹町": 8,
+                    "岩本町": 14,
+                    "平出一丁目": 1,
+                    "真柄町": 10,
+                    "中央一丁目": 1,
+                    "中山町": 7,
+                    "上小松町": 8,
+                    "御幸町": 2,
+                    "若竹町": 2,
+                    "宮谷町": 11,
+                    "芝原三丁目": 4,
+                    "下平吹町": 8,
+                    "姫川二丁目": 2,
+                    "余田町": 4,
+                    "押田一丁目": 5,
+                    "三ツ屋町": 10,
+                    "中津山町": 15,
+                    "高瀬一丁目": 1,
+                    "押田二丁目": 5,
+                    "文京二丁目": 2,
+                    "村国二丁目": 5,
+                    "蓑脇町": 11,
+                    "桧尾谷町": 11,
+                    "あおば町": 2,
+                    "日野美一丁目": 1,
+                    "京町三丁目": 1,
+                    "上杉本町": 12,
+                    "芝原一丁目": 4,
+                    "北町": 10,
+                    "本保町": 4,
+                    "国高一丁目": 5,
+                    "小杉町": 12,
+                    "平林町": 9,
+                    "高瀬二丁目": 1,
+                    "安養寺町": 12,
+                    "西尾町": 9,
+                    "府中二丁目": 0,
+                    "三ツ俣町": 6,
+                    "戸谷町": 10,
+                    "池ノ上町": 3,
+                    "領家町": 16,
+                    "広瀬ひばりが丘": 3,
+                    "波垣町": 16,
+                    "北坂下町": 16,
+                    "上大坪町": 11,
+                    "池泉町": 11,
+                    "中津原町": 7,
+                    "瓜生野町": 8,
+                    "徳間町": 11,
+                    "曽原町": 12,
+                    "矢船町": 9,
+                    "堀川町": 0,
+                    "本多三丁目": 0,
+                    "新町": 1,
+                    "横市町": 5,
+                    "南小山町": 11,
+                    "西谷町": 9,
+                    "長尾町": 10,
+                    "長谷町": 16,
+                    "安戸町": 12,
+                    "堀町": 12,
+                    "上四目町": 6,
+                    "豊町": 2,
+                    "京町一丁目": 1,
+                    "平出三丁目": 1,
+                    "春日野町": 8,
+                    "菖蒲谷町": 12,
+                    "北府二丁目": 0,
+                    "富士見台": 15,
+                    "丹生郷町": 6,
+                    "本多二丁目": 0,
+                    "若松町": 1,
+                    "国高三丁目": 5,
+                    "八石町": 14,
+                    "平和町": 1,
+                    "清根町": 16,
+                    "塚町": 5,
+                    "南二丁目": 2,
+                    "妙法寺町": 2,
+                    "氷坂町": 4,
+                    "上黒川町": 12,
+                    "国府二丁目": 0,
+                    "北日野住宅団地": 9,
+                    "藤木町": 16,
+                    "小野谷町": 9,
+                    "大虫本町": 6,
+                    "畷町": 2,
+                    "入谷町": 11,
+                    "葛岡町": 9,
+                    "粟田部町鞍谷": 13,
+                    "大塩町": 8,
+                    "北府三丁目": 0,
+                    "姫川一丁目": 2,
+                    "日野美二丁目": 1,
+                    "市野々町": 16,
+                    "国高二丁目": 5,
+                    "鴉ケ平町": 12,
+                    "東庄境町": 15,
+                    "長五町": 14,
+                    "問屋町": 9,
+                    "深草二丁目": 1,
+                    "野岡町": 15,
+                    "相木町": 16,
+                    "村国三丁目": 5,
+                    "平出二丁目": 1,
+                    "柳元町": 16,
+                    "赤坂町": 15,
+                    "中野町": 12,
+                    "勾当原町": 7,
+                    "下別所町": 7,
+                    "中新庄町": 10,
+                    "岡本町": 3,
+                    "上真柄町": 11,
+                    "月見町": 2,
+                    "粟野町": 12,
+                    "粟田部町栄": 13,
+                    "芝原五丁目": 4,
+                    "学園団地": 2,
+                    "村国一丁目": 5,
+                    "大平町": 14,
+                    "西庄境町": 15,
+                    "国中町": 15,
+                    "杉尾町": 14,
+                    "八幡一丁目": 5,
+                    "別印町": 14,
+                    "味真野団地": 11,
+                    "今宿町": 8,
+                    "下四目町": 6,
+                    "大虫町": 6,
+                    "春山町": 16,
+                    "東樫尾町": 16,
+                    "杉崎町": 10,
+                    "府中一丁目": 0,
+                    "中印町": 14,
+                    "中央二丁目": 1,
+                    "住吉町": 0,
+                    "矢放町": 9,
+                    "四郎丸町": 8,
+                    "北府一丁目": 0,
+                    "大虫本町勝蓮花": 6,
+                    "国兼町": 8,
+                    "米口仏谷町": 12,
+                    "庄町": 5,
+                    "千合谷町": 12,
+                    "北府四丁目": 0,
+                    "西樫尾町": 13,
+                    "味真野町": 11,
+                    "丸岡町": 12,
+                    "菅町": 12,
+                    "向新保町": 9,
+                    "神明町": 2,
+                    "大手町": 9,
+                    "粟田部町富永": 13,
+                    "二階堂町": 12,
+                    "清水頭町": 11,
+                    "千福町": 2,
+                    "常久町": 2,
+                    "芝原二丁目": 4,
+                    "富士見が丘一丁目": 8,
+                    "北千福町": 1,
+                    "五分市町": 11,
+                    "村国四丁目": 5,
+                    "横根町": 6,
+                    "南三丁目": 2,
+                    "北小山町": 11,
+                    "常久団地": 2,
+                    "吾妻町": 0,
+                    "深草一丁目": 1,
+                    "室谷町": 16,
+                    "瓜生町": 5,
+                    "富士見が丘二丁目": 8,
+                    "向陽町": 8,
+                    "新保一丁目": 6,
+                    "南中町": 16,
+                    "帆山町": 9,
+                    "新小野": 3,
+                    "下太田町": 6,
+                    "文室町": 11,
+                    "馬上免町": 5,
+                    "森久町": 8,
+                    "稲寄町": 5,
+                    "白崎町": 8,
+                    "萱谷町": 11,
+                    "高木町": 5,
+                    "島町": 14,
+                    "上太田町": 6,
+                    "奥宮谷町": 11,
+                    "下中津原町": 7,
+                    "粟田部町蓬莱": 13,
+                    "定友町": 14,
+                    "不老町": 14,
+                    "仲山": 15,
+                    "小松二丁目": 1,
+                    "文京一丁目": 2,
+                    "京町二丁目": 1,
+                    "下黒川町": 12,
+                    "東千福町": 2,
+                    "錦町": 0,
+                    "吉村町": 11,
+                    "若宮町": 11,
+                    "新保町": 6,
+                    "粟田部町旭": 13,
+                    "蓬莱町": 0,
+                    "北山町": 6,
+                    "粟田部町西山": 13,
+                    "寺地町": 16,
+                    "殿町": 16,
+                    "赤谷町": 16
+                }
+
+                var townname = document.getElementById("townname");
+                var table = document.getElementById("answer_table");
+                var cell_color = true;
+
+                var random = {}
+
+                random.randint = function (min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                }
+                
+                random.choice = function (a) {
+                    return a[this.randint(0, a.length - 1)]
+                }
+
+                random.popitem = function (a) {
+                    var r = this.randint(0, a.length - 1);
+                    return a.splice(r, 1)[0];
+
+
+                }
+
+                var buttons = document.getElementsByClassName("click");
+                var area_names = ['東地区', '西地区', '南地区', '神山地区', '吉野地区', '国高地区', '大虫地区', '坂口地区', '王子保地区', '北日野地区', '北新庄地区', '味真野地区', '白山地区', '粟田部地区', '岡本地区', '南中山地区', '服間地区'];
+                var town_names = Object.keys(data);
+
+                function initquestion () {
+                    var answer_town_name = random.choice(town_names);
+                    if (screen.width < 768) {
+                        if (townname.textContent.length === 6) {
+                            townname.style.fontSize = "45px";
+                        }
+                        else if (townname.textContent.length > 6) {
+                            townname.style.fontSize = "40px";
+                        }
+                        else {
+                            townname.style.fontSize = "63px";
+                        }
+                    }
+                    var answer_area_index = data[answer_town_name];
+                    var collect = true;
+
+                    var questions = [];
+                    while (questions.length < 3) {
+                        var dummy_area_name = random.choice(area_names);
+                        var dummy_area_index = area_names.indexOf(dummy_area_name);
+                        if ((dummy_area_index === answer_area_index) || (questions.indexOf(dummy_area_index) !== -1)) {
+                            continue;
+                        }
+                        questions.unshift(dummy_area_index);
+                    }
+                    questions.unshift(answer_area_index);
+                    console.log(questions);
+                    townname.textContent = answer_town_name;
+                    for (var i = 0; i < 4; i++) {
+                        buttons[i].answer = random.popitem(questions);
+                        buttons[i].onclick = function (e) {
+                            if (e.target.answer === data[answer_town_name]) {
+                                town_names.splice(town_names.indexOf(data[answer_town_name]), 1);
+                                delete data[answer_town_name];
+                                console.log("OK");
+                                townname.style.color = "#8dd17f";
+                                if (!collect) {
+                                    var row = table.insertRow(1);
+                                    if (!cell_color) {
+                                        row.style.backgroundColor = "#f4f4f4";
+                                    }
+                                    var cell1 = row.insertCell(-1);
+                                    var cell2 = row.insertCell(-1);
+                                    cell1.textContent = answer_town_name;
+                                    cell2.textContent = area_names[answer_area_index];
+                                    cell_color = !cell_color;
+                                }
+                                initquestion();
+                            }
+                            else {
+                                townname.style.color = "red";
+                                collect = false;
+                            }
+                        }
+                        buttons[i].textContent = area_names[buttons[i].answer];
+
+                    }
+
+                }
+                initquestion();
+            })();
+
+
+        </script>
+    </body>
+</html>
