@@ -48,11 +48,12 @@
                 margin: 0 auto;
                 margin-top: 5px;
                 font-size: 20px;
+                border-collapse: collapse;
 
             }
 
             td, th {
-                width: 120px;
+                width: 130px;
 
             }
 
@@ -75,6 +76,10 @@
 
             div.click:hover {
                 cursor: pointer;
+            }
+
+            div.click:active {
+                background-color: #4c9ed9;
             }
 
             p#townname {
@@ -117,6 +122,7 @@
             }
         </style>
         <script>
+            var debug = true;
 
             (function() {
                 var data = {
@@ -394,7 +400,7 @@
                 random.randint = function (min, max) {
                     return Math.floor(Math.random() * (max - min + 1)) + min;
                 }
-                
+
                 random.choice = function (a) {
                     return a[this.randint(0, a.length - 1)]
                 }
@@ -412,6 +418,7 @@
 
                 function initquestion () {
                     var answer_town_name = random.choice(town_names);
+                    console.log("Townname:", answer_town_name);
                     if (screen.width < 768) {
                         if (townname.textContent.length === 6) {
                             townname.style.fontSize = "45px";
@@ -424,7 +431,11 @@
                         }
                     }
                     var answer_area_index = data[answer_town_name];
-                    var collect = true;
+                    if (answer_area_index === undefined) {
+                        console.log("undefined");
+
+                    }
+                    var correct = true;
 
                     var questions = [];
                     while (questions.length < 3) {
@@ -433,20 +444,19 @@
                         if ((dummy_area_index === answer_area_index) || (questions.indexOf(dummy_area_index) !== -1)) {
                             continue;
                         }
-                        questions.unshift(dummy_area_index);
+                        questions.push(dummy_area_index);
                     }
-                    questions.unshift(answer_area_index);
+                    questions.push(answer_area_index);
                     console.log(questions);
                     townname.textContent = answer_town_name;
                     for (var i = 0; i < 4; i++) {
                         buttons[i].answer = random.popitem(questions);
                         buttons[i].onclick = function (e) {
                             if (e.target.answer === data[answer_town_name]) {
-                                town_names.splice(town_names.indexOf(data[answer_town_name]), 1);
+                                town_names.splice(town_names.indexOf(answer_town_name), 1);
                                 delete data[answer_town_name];
-                                console.log("OK");
                                 townname.style.color = "#8dd17f";
-                                if (!collect) {
+                                if (!correct) {
                                     var row = table.insertRow(1);
                                     if (!cell_color) {
                                         row.style.backgroundColor = "#f4f4f4";
@@ -457,11 +467,16 @@
                                     cell2.textContent = area_names[answer_area_index];
                                     cell_color = !cell_color;
                                 }
-                                initquestion();
+                                if (town_names.length !== 0) {
+                                    initquestion();
+                                }
+                                else {
+                                    townname.textContent = "Finish!";
+                                }
                             }
                             else {
                                 townname.style.color = "red";
-                                collect = false;
+                                correct = false;
                             }
                         }
                         buttons[i].textContent = area_names[buttons[i].answer];
